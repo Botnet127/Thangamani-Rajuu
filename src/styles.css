@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #090a0c;
+  --color-foreground: #ecece8;
+  --color-card: #121418;
+  --color-muted: #191c21;
+  --color-muted-foreground: #9a9d96;
+  --color-subtle: #6b6e68;
+  --color-primary: #ecece8;
+  --color-primary-foreground: #090a0c;
+  --color-accent: #b7c4d0;
+  --color-accent-foreground: #090a0c;
+  --color-border: #26292e;
+  --color-ring: #b7c4d0;
+  --color-ok: #8aa58c;
+  --color-warn: #c4b08a;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+
+  --text-hero: clamp(3.25rem, 8vw, 6.25rem);
+  --tracking-label: 0.18em;
+  --aspect-portrait: 4 / 5;
+  --aspect-art: 3 / 4;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+
+  --shadow-border: 0 0 0 1px rgb(255 255 255 / 0.08);
+  --shadow-border-hover: 0 0 0 1px rgb(255 255 255 / 0.14);
+
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .grid-bg {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-foreground) 4.5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--color-foreground) 4.5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 20%, transparent 75%);
+    animation: grid-drift 48s linear infinite;
+  }
+
+  .hero-anime {
+    position: absolute;
+    inset: 0;
+    background-image: url("/anime-city.jpg");
+    background-size: cover;
+    background-position: center 28%;
+    opacity: 0.32;
+    mask-image: linear-gradient(to bottom, black 8%, transparent 72%);
+    animation: city-drift 42s ease-in-out infinite alternate;
+  }
+
+  .hero-anime-veil {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--color-background) 62%, transparent);
+  }
+
+  .section-pad {
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-stagger > * {
+  animation: rise 500ms var(--ease-smooth-out) both;
+}
+.hero-stagger > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+.hero-stagger > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+.hero-stagger > *:nth-child(3) {
+  animation-delay: 200ms;
+}
+.hero-stagger > *:nth-child(4) {
+  animation-delay: 280ms;
+}
+.hero-stagger > *:nth-child(5) {
+  animation-delay: 360ms;
+}
+
+.quote-slot {
+  min-height: 5.5rem;
+}
+
+.quote-line {
+  display: block;
+  animation: rise 500ms var(--ease-smooth-out) both;
+}
+
+.portrait-image {
+  outline: 1px solid rgb(255 255 255 / 0.1);
+  outline-offset: -1px;
+}
+
+.portrait-scan {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 28%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in oklab, var(--color-accent) 18%, transparent),
+    transparent
+  );
+  animation: scan-sweep 5.5s var(--ease-smooth-out) infinite;
+}
+
+.portrait-hud {
+  pointer-events: none;
+  position: absolute;
+  inset: 8px;
+  opacity: 0.75;
+  background:
+    linear-gradient(var(--color-accent), var(--color-accent)) top left / 18px 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) top left / 1px 18px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) top right / 18px 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) top right / 1px 18px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) bottom left / 18px 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) bottom left / 1px 18px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) bottom right / 18px 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) bottom right / 1px 18px no-repeat;
+  animation: hud-breathe 3.2s ease-in-out infinite;
+}
+
+.portrait-radar {
+  pointer-events: none;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 72%,
+    color-mix(in oklab, var(--color-accent) 40%, transparent) 100%
+  );
+  opacity: 0.55;
+  animation: radar-spin 7s linear infinite;
+}
+
+.live-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-ok);
+  animation: live-ping 2s ease-out infinite;
+}
+
+@keyframes grid-drift {
+  to {
+    background-position: 72px 72px;
+  }
+}
+
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(360%);
+  }
+}
+
+@keyframes hud-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes radar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes live-ping {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-ok) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes city-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-stagger > *,
+  .quote-line,
+  .grid-bg,
+  .hero-anime,
+  .portrait-scan,
+  .portrait-hud,
+  .portrait-radar,
+  .live-dot {
+    animation: none;
+  }
+}
